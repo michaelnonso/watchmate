@@ -1,0 +1,53 @@
+username: michael.ejeagba
+password: 123456
+
+
+JWT WEB TOKEN AUTHENTICATION
+for javascript front end framworks
+jwt.io
+
+pip install djangorestframework_simplejwt
+
+add to global main project setting if you want to add it globally
+
+
+uasername,password----->AT(access token;5mins)   ---saved in local storage on client side
+                        RT(refresh token;24hrs)
+
+token is verified using a special algo and no need to maintain the
+token value in database or do calls to database to verify it 
+therefore load on database is reduced.
+
+Refresh token is used to regenerate a new access token when the access token gets destroyed after 5mins
+
+Token is nade up of header, payload and signature
+
+we cant use jwt in browser, we can use it in postman or http pi in cmd
+
+unlike in token (Token 50b53815f24d45235704a1bd47d89e46079923eb) 
+in JWT we use (Bearer access_token) and this is sent by POST in header to 'api/token/'
+
+
+After 5min the acces token is destroyed and new one is regenerated with the refresh Token however the refresh token itself stays the same
+
+(refresh refresh_token as key value pair) is sent by POST in the body(x-wwww.form-urlencoded) to the refresh url;'api/token/refresh/'
+
+SETTINGS CAN BE ADDED TO GENERATE A NEW REFRESH TOKEN  AFTER Refresh
+
+
+added to project setting
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS': True
+}
+
+
+NOTE THAT BOTH REFRESH AND ACCESS TOKEN CARRIERS USER_ID THAT CONNECTS
+THE USER TO THE TOKEN.
+
+
+DISADVANTAGE OF JWT
+acces cant be revoked as long as the refresh token and access token are still valid excet the user is deleted[***or a new token is generated for the user but not sent to him]
+because the token is stored in the local storage on the front end side which we do not have access to
+
+FOR LOGOUT.
+front end can implement by deleating the tokens stored in the local storage
